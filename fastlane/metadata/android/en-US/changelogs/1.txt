@@ -1,0 +1,1 @@
+First release: on-device tracker scan with risk levels, update alerts with history, most common trackers, private lock-screen notifications.

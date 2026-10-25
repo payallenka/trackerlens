@@ -1,0 +1,22 @@
+<p>TrackerLens shows which companies' tracking code is built into the apps on your phone, and warns you when an app update quietly adds more.</p>
+
+<p><b>What it does</b></p>
+<ul>
+<li>Scans every installed app for 428 known tracker and advertising SDKs (from the Exodus Privacy database).</li>
+<li>Shows the exact class it found as proof for every tracker.</li>
+<li>Gives each app a risk level and privacy score weighted by tracker type, and lists its sensitive permissions.</li>
+<li>Checks for app updates in the background and notifies you when an update adds trackers or permissions, with a per-app update history.</li>
+<li>Search, sort by highest risk, see which trackers are most common on your phone, and jump straight to an app's settings.</li>
+</ul>
+
+<p><b>Private by design</b></p>
+<ul>
+<li>Everything runs on your phone. TrackerLens has no internet permission, so it cannot send anything anywhere.</li>
+<li>No accounts, no ads, no analytics, no crash reporting. Its data is excluded from cloud backup.</li>
+<li>Apps are only read, never run or modified.</li>
+</ul>
+
+<p><b>Limits</b></p>
+<p>TrackerLens detects tracker code in an app's Java/Kotlin code. It does not see trackers in native libraries, Flutter/Dart or React Native JavaScript code, code downloaded at runtime, a company's own in-house analytics, or trackers missing from the Exodus database. Finding tracker code means it is present, not necessarily active.</p>
+
+<p>Tracker definitions: Exodus Privacy (ODbL 1.0).</p>
