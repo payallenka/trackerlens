@@ -15,6 +15,11 @@ class Settings(context: Context) {
         get() = prefs.getLong("alerts_seen_until", 0)
         set(value) = prefs.edit().putLong("alerts_seen_until", value).apply()
 
+    /** "system", "light" or "dark". */
+    var theme: String
+        get() = prefs.getString("theme", "system") ?: "system"
+        set(value) = prefs.edit().putString("theme", value).apply()
+
     /** The first-run journey (welcome → consent → scan → results → plan) has been completed. */
     var onboarded: Boolean
         get() = prefs.getBoolean("onboarded", false)

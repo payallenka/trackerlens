@@ -30,6 +30,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -69,6 +71,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -78,7 +81,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -151,6 +153,8 @@ fun TrackerLensScreen(vm: MainViewModel) {
     val snackbar = remember { SnackbarHostState() }
     var explainScore by remember { mutableStateOf(false) }
     if (explainScore) ScoreExplanation(onDismiss = { explainScore = false })
+    var chooseTheme by remember { mutableStateOf(false) }
+    if (chooseTheme) ThemeDialog(state.theme, onPick = { vm.setTheme(it); chooseTheme = false }, onDismiss = { chooseTheme = false })
     // Hoisted so each list keeps its position while an app's details are open and across rotation.
     val appsListState = rememberLazyListState()
     val homeListState = rememberLazyListState()
@@ -181,7 +185,7 @@ fun TrackerLensScreen(vm: MainViewModel) {
                         IconButton(onClick = vm::rescan, enabled = !state.scanning) {
                             Icon(Icons.Filled.Refresh, contentDescription = "Rescan")
                         }
-                        OverflowMenu(onReplay = vm::replayJourney, onExplain = { explainScore = true })
+                        OverflowMenu(onReplay = vm::replayJourney, onExplain = { explainScore = true }, onTheme = { chooseTheme = true })
                     }
                 },
             )
@@ -472,15 +476,40 @@ private fun AlertsOffBanner() {
 
 /** Less frequent actions, reachable from any scroll position. */
 @Composable
-private fun OverflowMenu(onReplay: () -> Unit, onExplain: () -> Unit) {
+private fun OverflowMenu(onReplay: () -> Unit, onExplain: () -> Unit, onTheme: () -> Unit) {
     var open by remember { mutableStateOf(false) }
     Box {
         IconButton(onClick = { open = true }) { Icon(Icons.Filled.MoreVert, contentDescription = "More options") }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             DropdownMenuItem(text = { Text("About the privacy score") }, onClick = { open = false; onExplain() })
+            DropdownMenuItem(text = { Text("Theme") }, onClick = { open = false; onTheme() })
             DropdownMenuItem(text = { Text("Replay introduction") }, onClick = { open = false; onReplay() })
         }
     }
+}
+
+@Composable
+private fun ThemeDialog(current: ThemeMode, onPick: (ThemeMode) -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = { TextButton(onClick = onDismiss) { Text("Close") } },
+        title = { Text("Theme") },
+        text = {
+            Column(Modifier.selectableGroup()) {
+                ThemeMode.entries.forEach { mode ->
+                    Row(
+                        Modifier.fillMaxWidth().selectable(selected = mode == current, role = Role.RadioButton, onClick = { onPick(mode) })
+                            .padding(vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        RadioButton(selected = mode == current, onClick = null)
+                        Spacer(Modifier.width(12.dp))
+                        Text(mode.label)
+                    }
+                }
+            }
+        },
+    )
 }
 
 @Composable
@@ -880,7 +909,7 @@ internal fun RiskBadge(risk: Risk, partial: Boolean = false) {
 
 @Composable
 private fun riskColor(risk: Risk): Color {
-    val dark = isSystemInDarkTheme()
+    val dark = LocalDarkTheme.current
     return when (risk) {
         // Neutral, not "safe" green: no known trackers says nothing about permissions or first-party tracking.
         Risk.None, Risk.Unknown -> MaterialTheme.colorScheme.onSurfaceVariant
@@ -892,7 +921,7 @@ private fun riskColor(risk: Risk): Color {
 
 /** For changes that improve privacy (a tracker or permission removed). */
 @Composable
-private fun improvementColor(): Color = if (isSystemInDarkTheme()) Color(0xFF81C995) else Color(0xFF1E7B34)
+private fun improvementColor(): Color = if (LocalDarkTheme.current) Color(0xFF81C995) else Color(0xFF1E7B34)
 
 private fun riskLabel(risk: Risk) = when (risk) {
     Risk.None -> "No known trackers"

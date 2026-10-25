@@ -10,13 +10,26 @@
   On-device only · no internet permission · no ads · GPL-3.0
 </p>
 
-<p align="center">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_overview.png" width="250" alt="Overview: privacy score, most common trackers and the app list (Android 16 emulator with system apps shown)">
-  &nbsp;
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2_app_detail.png" width="250" alt="App detail: risk level, the trackers found and what each one does">
-  &nbsp;
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3_tracker_filter.png" width="250" alt="Every app containing Google Firebase Analytics, with its risk level">
-</p>
+<table align="center">
+  <tr>
+    <td align="center"><b>Light</b></td>
+    <td align="center"><b>Dark</b></td>
+  </tr>
+  <tr>
+    <td>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_overview.png" width="200" alt="Home tab in light theme: privacy score, next step and most common trackers">
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2_app_detail.png" width="200" alt="App detail in light theme: risk level, trackers and what you can do">
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3_tracker_filter.png" width="200" alt="Apps tab in light theme, filtered to apps containing Google Firebase Analytics">
+    </td>
+    <td>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4_overview_dark.png" width="200" alt="Home tab in dark theme">
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5_app_detail_dark.png" width="200" alt="App detail in dark theme">
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6_tracker_filter_dark.png" width="200" alt="Apps tab in dark theme, filtered by tracker">
+    </td>
+  </tr>
+</table>
+
+<p align="center"><sub>Follows your phone's theme by default; choose Light or Dark from the ⋮ menu. Screenshots: Android 16 emulator with system apps shown.</sub></p>
 
 ---
 
@@ -37,7 +50,8 @@ TrackerLens reads each installed app's code on your phone and tells you who is i
   permissions, with a per-app update history and an in-app Alerts screen.
 - **Most common trackers on your phone**, and which apps contain each one.
 - **Sensitive permissions** per app, with a shortcut to the app's permission settings.
-- Search, sort by risk, name or recent updates, optional system apps, dark mode.
+- Search, sort by risk, name or recent updates, optional system apps.
+- Light and dark themes (follows the system, or choose in the ⋮ menu).
 
 ## Trackers it recognises
 

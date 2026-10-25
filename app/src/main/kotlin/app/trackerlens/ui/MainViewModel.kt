@@ -28,6 +28,8 @@ import java.io.IOException
 
 enum class SortOrder(val label: String) { HighestRisk("Highest risk"), Name("Name"), RecentlyUpdated("Recently updated") }
 
+enum class ThemeMode(val label: String) { System("System default"), Light("Light"), Dark("Dark") }
+
 /** The dashboard's sections, one per bottom-navigation tab. */
 enum class Tab(val label: String) { Home("Home"), Apps("Apps"), Trackers("Trackers"), Alerts("Alerts") }
 
@@ -104,6 +106,7 @@ data class UiState(
     val lastScanAt: Long = 0,
     val catalogVersion: String = "",
     val includeSystem: Boolean = false,
+    val theme: ThemeMode = ThemeMode.System,
     /** First-run journey step (see [Course]); null once completed. */
     val course: Course? = null,
     /** Live discoveries during a scan, for the scanning course. */
@@ -192,6 +195,7 @@ class MainViewModel(
         UiState(
             includeSystem = settings.includeSystem,
             selected = saved[SELECTED],
+            theme = ThemeMode.entries.firstOrNull { it.name.equals(settings.theme, ignoreCase = true) } ?: ThemeMode.System,
             tab = saved.get<String>(TAB)?.let { runCatching { Tab.valueOf(it) }.getOrNull() } ?: Tab.Home,
             alertsSeenUntil = settings.alertsSeenUntil,
             newAlertsAfter = saved.get<Long>(NEW_AFTER) ?: Long.MAX_VALUE,
@@ -460,6 +464,11 @@ class MainViewModel(
         val next = if (reviewed) _state.value.reviewed + pkg else _state.value.reviewed - pkg
         settings.reviewedApps = next
         set { it.copy(reviewed = next) }
+    }
+
+    fun setTheme(mode: ThemeMode) {
+        settings.theme = mode.name.lowercase()
+        set { it.copy(theme = mode) }
     }
 
     fun refreshNotificationState() = set { it.copy(notificationsOn = notifier.enabled()) }

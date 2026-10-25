@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -17,6 +18,11 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
@@ -29,7 +35,10 @@ class MainActivity : ComponentActivity() {
         // Notification permission is requested inside the first-run journey, where it's explained.
         // Only a fresh launch follows the intent; after rotation the ViewModel already has the screen.
         if (savedInstanceState == null) handle(intent)
-        setContent { TrackerLensTheme { TrackerLensScreen(vm) } }
+        setContent {
+            val state by vm.state.collectAsStateWithLifecycle()
+            TrackerLensTheme(state.theme) { TrackerLensScreen(vm) }
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -59,14 +68,31 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/** Whether the app is currently drawn dark (the chosen theme, or the system's when "System default"). */
+val LocalDarkTheme = staticCompositionLocalOf { false }
+
 @Composable
-fun TrackerLensTheme(content: @Composable () -> Unit) {
-    val dark = isSystemInDarkTheme()
+fun TrackerLensTheme(mode: ThemeMode, content: @Composable () -> Unit) {
+    val dark = when (mode) {
+        ThemeMode.System -> isSystemInDarkTheme()
+        ThemeMode.Light -> false
+        ThemeMode.Dark -> true
+    }
     val ctx = LocalContext.current
     val scheme = when {
         Build.VERSION.SDK_INT >= 31 -> if (dark) dynamicDarkColorScheme(ctx) else dynamicLightColorScheme(ctx)
         dark -> darkColorScheme(primary = Color(0xFF7FD8C2))
         else -> lightColorScheme(primary = Color(0xFF1B5E50))
     }
-    MaterialTheme(colorScheme = scheme, content = content)
+    // Status and navigation bar icons follow the app's theme, not only the system's, so they stay readable.
+    val activity = ctx as? ComponentActivity
+    LaunchedEffect(dark) {
+        activity?.enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.auto(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT) { dark },
+            navigationBarStyle = SystemBarStyle.auto(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT) { dark },
+        )
+    }
+    CompositionLocalProvider(LocalDarkTheme provides dark) {
+        MaterialTheme(colorScheme = scheme, content = content)
+    }
 }
