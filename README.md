@@ -37,8 +37,6 @@
 
 - **GitHub:** [latest release](https://github.com/payallenka/trackerlens/releases/latest) (APK, Android 9+)
 - **Obtainium:** add `https://github.com/payallenka/trackerlens` to get updates automatically
-- **F-Droid:** planned. F-Droid lists apps after three months of active maintenance; the build is already
-  reproducible and passed F-Droid's checks, so it will be resubmitted in late January 2027
 
 Verify the APK's signing certificate (SHA-256):
 `5c:f6:e5:df:f9:1b:78:c6:70:b7:49:b2:39:d4:91:b5:5b:7e:cd:f6:02:b4:9a:79:fc:22:a0:39:0b:f1:1f:9a`
