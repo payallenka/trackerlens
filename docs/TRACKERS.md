@@ -1,6 +1,6 @@
 # Trackers TrackerLens recognises
 
-428 trackers from the [Exodus Privacy](https://exodus-privacy.eu.org) database (catalog version 2026-10-21, ODbL 1.0).
+428 trackers from the [Exodus Privacy](https://exodus-privacy.eu.org) database (catalog version 2026-10-26, ODbL 1.0).
 Generated from `app/src/main/assets/trackers.json` by `node scripts/tracker-list.mjs`; don't edit by hand.
 Each tracker is grouped by its most invasive category (the one that weighs most in the privacy score).
 
