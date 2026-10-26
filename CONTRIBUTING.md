@@ -12,6 +12,10 @@ Thanks for helping. A few ground rules keep the app trustworthy:
 
 ## Workflow
 
+Releases: see [RELEASING.md](RELEASING.md). Dependency updates arrive as weekly Dependabot pull requests and the
+tracker catalog as a monthly pull request; review them, let CI pass, and merge.
+
+
 ```sh
 ./gradlew :core:test :app:assembleDebug
 ```

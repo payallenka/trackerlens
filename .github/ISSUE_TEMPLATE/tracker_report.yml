@@ -1,0 +1,17 @@
+name: Missed or wrong tracker
+description: An app contains a tracker TrackerLens didn't find, or flags something that isn't a tracker
+labels: [detection]
+body:
+  - type: input
+    id: app
+    attributes:
+      label: App name and package (shown under "Show technical details")
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What's missing or wrong?
+      description: Tracker definitions come from Exodus Privacy; if a signature itself is wrong, it may need fixing upstream too.
+    validations:
+      required: true

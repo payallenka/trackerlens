@@ -37,7 +37,8 @@
 
 - **GitHub:** [latest release](https://github.com/payallenka/trackerlens/releases/latest) (APK, Android 9+)
 - **Obtainium:** add `https://github.com/payallenka/trackerlens` to get updates automatically
-- **IzzyOnDroid** and **F-Droid:** submitted; links will appear here once listed
+- **F-Droid:** planned. F-Droid lists apps after three months of active maintenance; the build is already
+  reproducible and passed F-Droid's checks, so it will be resubmitted in late January 2027
 
 Verify the APK's signing certificate (SHA-256):
 `5c:f6:e5:df:f9:1b:78:c6:70:b7:49:b2:39:d4:91:b5:5b:7e:cd:f6:02:b4:9a:79:fc:22:a0:39:0b:f1:1f:9a`
@@ -225,6 +226,17 @@ node scripts/update-trackers.mjs   # Node 18+
 Run it before a release, never from the app: Exodus asks end-user apps not to call its API.
 Then regenerate the tracker list in this README's table and `docs/TRACKERS.md` with
 `node scripts/tracker-list.mjs --compact`.
+
+## Roadmap
+
+About one release a month; see [milestones](https://github.com/payallenka/trackerlens/milestones) and
+[CHANGELOG.md](CHANGELOG.md).
+
+- **0.2.0** (Nov 2026): first-party analytics detection (e.g. in-house SDKs of large platforms), shown separately from third-party trackers
+- **0.3.0** (Dec 2026): export a report (CSV/JSON) through the share sheet; text moved to string resources so the app can be translated
+- **0.4.0** (Jan 2027): home-screen widget with the privacy score; first translations
+
+The tracker catalog is refreshed from Exodus Privacy every month.
 
 ## Contributing
 

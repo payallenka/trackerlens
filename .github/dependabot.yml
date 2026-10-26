@@ -1,0 +1,14 @@
+# Weekly pull requests for library and CI updates. Review, let CI pass, then merge.
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      androidx-and-kotlin:
+        patterns: ["androidx.*", "org.jetbrains.kotlin*", "org.jetbrains.kotlinx*", "com.android.*"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
